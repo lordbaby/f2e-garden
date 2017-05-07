@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>基于.active类名的点击显示更多交互效果实例页面</title>
+    <style>
+        .box {
+            position: relative;
+            max-height: 80px;
+            width: 200px;
+            overflow: hidden;
+            transition: max-height 0.2s;
+        }
+        
+        .more {
+            position: absolute;
+            width: 100%;
+            padding-top: 20px;
+            text-align: center;
+            cursor: pointer;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(to bottom, hsla(0, 0%, 100%, 0), hsla(0, 0%, 100%, 0.9) 50%, hsla(0, 0%, 100%, 1));
+        }
+        
+        .box .active {
+            max-height: 200px;
+        }
+        
+        .active>.more {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        flv.js-B站HTML5播放器内核开源项目地址：<br> https://github.com/Bilibili/flv.js一个纯JS的不依赖Flash的HTML5 <br> Flash视频 (FLV)播放器！本项目受hls.js启发，<br>        需要依赖Media Source Extensions才能生效。
+        <a class="more">展开更多</a>
+    </div>
+    <script>
+        var box = document.querySelector('.box');
+        var more = document.querySelector('.more');
+        if(box && more) {
+            more.onclick = function () {
+                box.className += ' active';
+            }
+        }
+        
+    </script>
+</body>
+
+</html>

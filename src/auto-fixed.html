@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>js页面滚动浮动层智能定位(jQuery)实例页面</title>
+    <style>
+        header {
+            height: 150px;
+        }
+        
+        .float {
+            width: 200px;
+            height: 200px;
+            background: #f2e;
+        }
+    </style>
+</head>
+
+<body>
+    <header>header</header>
+    <div class="float" id="float">
+        我是个腼腆羞涩的浮动层...
+    </div>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <p>some text</p>
+    <script src="../node_modules/jquery/dist/jquery.min.js">
+
+    </script>
+    <script>
+        $.fn.smartFloat = function () {
+            var position = function (element) {
+                var top = element.position().top, pos = element.css("position");
+                $(window).scroll(function () {
+                    var scrolls = $(this).scrollTop();
+                    if (scrolls > top) {
+                        if (window.XMLHttpRequest) {
+                            element.css({
+                                position: "fixed",
+                                top: 0
+                            });
+                        } else {
+                            element.css({
+                                top: scrolls
+                            });
+                        }
+                    } else {
+                        element.css({
+                            position: "absolute",
+                            top: top
+                        });
+                    }
+                });
+            };
+            return $(this).each(function () {
+                position($(this));
+            });
+        };
+
+        //绑定
+        $("#float").smartFloat();
+    </script>
+</body>
+
+</html>
