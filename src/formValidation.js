@@ -13,7 +13,7 @@ var strategies = {
 			return errorMsg;
 		}
 	},
-	isMobile: function(val) {
+	isMobile: function(val, errorMsg) {
 		if (!/^1[3|5|7|8][0-9]{d}$/.test(val)) {
 			return errorMsg;
 		}
