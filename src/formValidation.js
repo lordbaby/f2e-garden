@@ -29,11 +29,11 @@ var Validator = function () {
 Validator.prototype.add = function(dom, rules) {
 	var self = this;
 	for (var i = 0; i < rules.length; i++) {
+		var rule = rules[i];
 		(function(rule) {
-			var rule = rules[i];
 			var strategArr = rule.strategy.split(':');
 			var errorMsg = rule.errorMsg;
-			this.cache.push(function() {
+			self.cache.push(function() {
 				var strategy = strategArr.shift();
 				strategArr.unshift(dom.value);
 				strategArr.push(errorMsg);
@@ -82,10 +82,8 @@ var validateFunc = function() {
 	return errorMsg;
 }
 
-//提交时验证
-var submitbtn = document.getElementById('submitbtn');
 
-submitbtn.onsubmit = function() {
+form.onsubmit = function() {
 	var errorMsg = validateFunc()
 	if (errorMsg) {
 		alert(errorMsg)
