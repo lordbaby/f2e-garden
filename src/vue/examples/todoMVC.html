@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>todoMVC</title>
+  <style>
+    .complete {
+      text-decoration: line-through;
+    }
+    ul li {
+      position: relative;
+    }
+    ul li .edit {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <input type="text" v-model="newTodo" @keyup.enter="addTodo" autofocus autocomplete="off" placeholder="need to do">
+    <ul>
+      <li v-for="todo in todos" :key="todo.id">
+        <span :class="{'complete': todo.isComplete}">{{todo.title}}</span>
+        <input class="edit" 
+              :style="{'display': editedTodo!==null ? 'block': 'none'}" 
+              v-todo-focus="todo===editedTodo" type="text" 
+              v-model="todo.title" 
+              @blur="doneEdit(todo)" 
+              @keyup.enter="doneEdit(todo)" 
+              @keyup.esc="cancelEdit(todo)">
+        <button @click="removeTodo(todo)">remove</button>
+        <button @click="doneTodo(todo)">complete</button>
+        <button @click="editTodo(todo)">edit</button>
+      </li>
+    </ul>
+  </div>
+  <script src="https://unpkg.com/vue@2.3.4/dist/vue.js"></script>
+  <script>
+    new Vue({
+      data: {
+        todos: [],
+        newTodo: '',
+        editedTodo: null,
+        visibility: 'all'
+      },
+      directives: {
+        'todo-focus': function (el, binding) {
+          if (binding.value) {
+            el.focus()
+          }
+        }
+      },
+      methods: {
+        addTodo: function () {
+          this.todos.push({
+            id: this.todos.length,
+            isComplete: false,
+            title: this.newTodo
+          })
+          this.newTodo = ''
+        },
+        removeTodo: function (todo) {
+          // this.todos = this.todos.filter(function(item) {
+          //   return todo.id !== item.id
+          // })
+          this.todos.splice(this.todos.indexOf(todo), 1)
+        },
+        editTodo: function (todo) {
+          this.beforeEditCache = todo.title
+          this.editedTodo = todo
+        },
+        doneEdit: function () {
+          if (!this.editedTodo) {
+            return false
+          }
+          this.editedTodo = null
+        },
+        cancelEdit: function (todo) {
+          this.editedTodo = null
+          todo.title = this.beforeEditCache
+        },
+        doneTodo: function (todo) {
+          this.todos = this.todos.map(function(item) {
+            if (item.id === todo.id) {
+              item.isComplete = true
+            }
+            return item
+          })
+        }
+      }
+    }).$mount('#app')
+  </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Latest Vue.js Commits</title>
+</head>
+<body>
+  <div id="app">
+    <h2>Vuejs Latest commits</h2>
+    <template v-for="branch in branches">
+      <input type="radio" name="branch" :value="branch" v-model="currentBranch" :id="branch">
+      <label :for="branch">{{branch}}</label>
+    </template>
+    <p>vuejs/vue@{{currentBranch}}</p>
+    <ul>
+      <li v-for="commit in commits">
+        <a :href="commit.html_url" target="_blank">{{commit.sha.slice(0,7)}}</a>-
+        <span>{{commit.commit.message | truncate}}</span><br>
+        by <span><a :href="commit.author.html_url" target="_blank">{{commit.commit.author.name}}</a></span>
+        at <span>{{commit.commit.author.date | formateDate}}</span>
+      </li>
+    </ul>
+  </div>
+  <div>总结：对于切换tab来加载数据的示例，可通过currentTab 来作为watch属性，当currentTab值改变时来获取不同的数据，从而避免了绑定click事件</div>
+  <script src="https://unpkg.com/vue@2.3.4/dist/vue.js"></script>
+  <script>
+    var apiURL = 'https://api.github.com/repos/vuejs/vue/commits?per_page=3&sha='
+    new Vue({
+      el: '#app',
+      data: {
+        branches: ['master', 'dev'],
+        commits: null,
+        currentBranch: 'master'
+      },
+      created: function () {
+        this.fectchData()
+      },
+      watch: {
+        currentBranch: 'fectchData'
+      },
+      filters: {
+        truncate: function (v) {
+          var newline = v.indexOf('\n')
+          return newline > 0 ? v.slice(0, newline) : v
+        },
+        formateDate: function (v) {
+          return v.replace(/T|Z/g, ' ')
+        }
+      },
+      methods: {
+        fectchData: function () {
+          var xhr = new XMLHttpRequest()
+          var self = this
+          xhr.open('GET', apiURL + self.currentBranch)
+          xhr.onload = function () {
+            self.commits = JSON.parse(xhr.responseText)
+            console.log(self.commits[0].html_url)
+          }
+          xhr.send()
+        }
+      }
+    })
+  </script>
+</body>
+</html>
